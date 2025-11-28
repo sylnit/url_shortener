@@ -29,4 +29,3 @@ springdoc:
   swagger-ui:
     config-url: /api/v3/api-docs
 
-base_url: http://localhost:8080/

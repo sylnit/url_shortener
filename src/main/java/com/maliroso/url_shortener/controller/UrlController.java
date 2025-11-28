@@ -34,8 +34,7 @@ public class UrlController {
     @Autowired
     private RedirectMetricsService metricsService;
 
-    @Value("${base_url")
-    private String baseUrl;
+    private final String baseUrl = "http://localhost:8080/";
 
     @Operation(summary = "Create a short url for a long url")
     @ApiResponses(value = {
