@@ -4,7 +4,9 @@ import com.maliroso.url_shortener.dto.request.ShortenUrlRequest;
 import com.maliroso.url_shortener.dto.response.ShortUrlMetadataResponse;
 import com.maliroso.url_shortener.dto.response.ShortenUrlResponse;
 import com.maliroso.url_shortener.model.UrlMapping;
+import com.maliroso.url_shortener.service.RedirectMetricsService;
 import com.maliroso.url_shortener.service.UrlService;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,6 +30,9 @@ import java.util.Optional;
 public class UrlController {
     @Autowired
     private UrlService urlService;
+
+    @Autowired
+    private RedirectMetricsService metricsService;
 
     @Value("${base_url")
     private String baseUrl;
@@ -130,6 +135,10 @@ public class UrlController {
             if (longUrl != null) {
                 headers.setLocation(URI.create(longUrl));
             }
+
+            //record redirect for actuator endpoints
+            metricsService.recordRedirect();
+
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
