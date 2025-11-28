@@ -53,7 +53,12 @@ To package the application in a jar file, run the following command:
 ### Swagger API Documentation
 The API is well document using OpenAPI 3 (springdoc) + Swagger-UI.
 Once the project is running, the swagger API documentation can be access at:
-[http://localhost:8080/context-path/v3/api-docs](http://localhost:8080/context-path/v3/api-docs)
+
+API - Doc:
+[http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+
+Swagger UI:
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ### Actuator Metrics (Number of redirects)
 While the application is running, to see the actuator metrics, go to the follow url
