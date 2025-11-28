@@ -16,7 +16,7 @@ public class RateLimitFilter implements Filter {
     @Autowired
     private RateLimiterService rateLimiterService;
 
-    private static final int CAPACITY = 5;
+    private static final int CAPACITY = 10;
     private static final Duration REFILL_DURATION = Duration.ofMinutes(1);
 
     @Override
