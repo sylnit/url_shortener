@@ -21,7 +21,7 @@ Below are some assumptions made while building this project:
 1. Url short code are unique, but a long url can have multiple short codes differentiated by expiresAt time. If a long url has a short code that has not expired at the time of request, it will returned instead of creating a new one.
 2. Url short codes are valid for seven (7) days after which they expire.
 3. http is used instead of https as this is not running in production where ssl certificate is available.
-4. Rate limiter limits request to 5 per minute.
+4. Rate limiter limits request to 10 per minute.
 
 ## Build / Run instructions
 ### Using Docker and docker-compose
@@ -72,5 +72,5 @@ The application contains the following implemented features:
 * Observability with actuator showing number redirects
 * OpenAPI 3 (springdoc) + Swagger-UI
 * Dockerfile + docker-compose.yml (with Postgres)
-* Rate limiter of 5 requests per minute
+* Rate limiter of 10 requests per minute
 * Tests
