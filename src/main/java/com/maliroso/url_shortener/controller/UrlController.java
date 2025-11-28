@@ -1,9 +1,15 @@
 package com.maliroso.url_shortener.controller;
 
 import com.maliroso.url_shortener.dto.request.ShortenUrlRequest;
+import com.maliroso.url_shortener.dto.response.ShortUrlMetadataResponse;
 import com.maliroso.url_shortener.dto.response.ShortenUrlResponse;
 import com.maliroso.url_shortener.model.UrlMapping;
 import com.maliroso.url_shortener.service.UrlService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +32,12 @@ public class UrlController {
     @Value("${base_url")
     private String baseUrl;
 
+    @Operation(summary = "Create a short url for a long url")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Short url created for long url",
+                content = @Content(schema = @Schema(implementation = ShortenUrlResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable content")
+    })
     @Transactional
     @PostMapping("/api/urls")
     public ResponseEntity<?> createShortUrl(
@@ -51,6 +63,12 @@ public class UrlController {
         }
     }
 
+    @Operation(summary = "Get metadata for url code")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Metadata for url code retrieved successfully",
+                    content = @Content(schema = @Schema(implementation = ShortUrlMetadataResponse.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable content")
+    })
     @Transactional
     @GetMapping("/api/urls/{code}")
     public ResponseEntity<?> getUrlMetadata(
@@ -61,7 +79,13 @@ public class UrlController {
             if(urlMapSearch.isPresent()){
                 UrlMapping urlMap = urlMapSearch.get();
                 String shortUrl = baseUrl + "r/" + urlMap.getCode();
-                ShortenUrlResponse urlResponse = new ShortenUrlResponse(urlMap.getCode(), shortUrl);
+                ShortUrlMetadataResponse urlResponse = new ShortUrlMetadataResponse(
+                        urlMap.getCode(),
+                        shortUrl,
+                        urlMap.getLongUrl(),
+                        urlMap.getCreatedAt(),
+                        urlMap.getHitCount()
+                );
 
                 urlMap.setHitCount(urlMap.getHitCount() + 1);
                 urlService.updateHitCount(urlMap);
@@ -75,6 +99,11 @@ public class UrlController {
         }
     }
 
+    @Operation(summary = "Redirect to long url from short url")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "302", description = "Redirected to log url"),
+            @ApiResponse(responseCode = "404", description = "Url Not Found")
+    })
     @Transactional
     @GetMapping("/r/{code}")
     public ResponseEntity<?> redirectToUrl(
@@ -103,7 +132,7 @@ public class UrlController {
             }
             return new ResponseEntity<>(headers, HttpStatus.FOUND);
         }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
