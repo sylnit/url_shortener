@@ -20,4 +20,13 @@ management:
       exposure:
         include: health,info,metrics
 
+server:
+  servlet:
+    context-path: /api
+springdoc:
+  api-docs:
+    path: /api/v3/api-docs
+  swagger-ui:
+    config-url: /api/v3/api-docs
+
 base_url: http://localhost:8080/
