@@ -1,5 +1,5 @@
 # Use an official OpenJDK runtime as a base image
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21
 
 # Set the working directory in the container
 WORKDIR /app
@@ -21,5 +21,7 @@ RUN ./mvnw package -DskipTests
 # Expose the port your Spring Boot app runs on (default: 8080)
 EXPOSE 8080
 
+COPY target/*.jar app.jar
+
 # Run the jar file
-ENTRYPOINT ["java", "-jar", "target/*.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
