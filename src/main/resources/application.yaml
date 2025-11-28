@@ -2,4 +2,10 @@ spring:
   application:
     name: url_shortener
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
 base_url: http://localhost:8080/
