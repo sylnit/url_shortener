@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,6 +26,7 @@ public class UrlController {
     @Value("${base_url")
     private String baseUrl;
 
+    @Transactional
     @PostMapping("/api/urls")
     public ResponseEntity<?> createShortUrl(
             @Valid @RequestBody ShortenUrlRequest request
@@ -49,6 +51,7 @@ public class UrlController {
         }
     }
 
+    @Transactional
     @GetMapping("/api/urls/{code}")
     public ResponseEntity<?> getUrlMetadata(
             @PathVariable(name = "code") String code
@@ -72,6 +75,7 @@ public class UrlController {
         }
     }
 
+    @Transactional
     @GetMapping("/r/{code}")
     public ResponseEntity<?> redirectToUrl(
             @PathVariable(name = "code") String code
