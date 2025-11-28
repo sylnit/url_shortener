@@ -1,3 +1,5 @@
 spring:
   application:
     name: url_shortener
+
+base_url: http://localhost:8080/
