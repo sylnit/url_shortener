@@ -15,6 +15,9 @@ RUN ./mvnw dependency:resolve
 # Copy source code
 COPY src src
 
+# RUN test
+RUN ./mvnw test
+
 # Build the application
 RUN ./mvnw package -DskipTests
 
