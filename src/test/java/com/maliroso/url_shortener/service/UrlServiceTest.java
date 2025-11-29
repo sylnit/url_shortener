@@ -104,7 +104,7 @@ class UrlServiceTest {
             mockedUtil.when(() -> UrlHashUtil.generateMd5Hash(longUrl)).thenReturn(hash);
             mockedUtil.when(UrlHashUtil::calculateExpiresAt).thenReturn(expiresAt);
 
-            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(hash, any(Instant.class)))
+            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(eq(hash), any(Instant.class)))
                     .thenReturn(Optional.empty());
 
             UrlMapping saved = new UrlMapping();
@@ -142,11 +142,11 @@ class UrlServiceTest {
             // First lookup: exists → collision
             UrlMapping existing = new UrlMapping();
             existing.setCode(hash1);
-            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(hash1, any(Instant.class)))
+            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(eq(hash1), any(Instant.class)))
                     .thenReturn(Optional.of(existing));
 
             // Second lookup: empty → available
-            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(hash2, any(Instant.class)))
+            when(urlMappingRepository.findByCodeAndExpiresAtGreaterThanEqual(eq(hash2), any(Instant.class)))
                     .thenReturn(Optional.empty());
 
             UrlMapping saved = new UrlMapping();

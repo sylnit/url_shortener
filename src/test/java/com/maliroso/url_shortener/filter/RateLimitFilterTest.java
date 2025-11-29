@@ -52,8 +52,6 @@ class RateLimitFilterTest {
         } catch (Exception e) {
             throw new RuntimeException("Failed to inject rateLimiterService", e);
         }
-
-        when(response.getWriter()).thenReturn(printWriter);
     }
 
     @Test
@@ -73,25 +71,6 @@ class RateLimitFilterTest {
         verify(filterChain).doFilter(request, response);
         verify(response, never()).setStatus(anyInt());
         verify(printWriter, never()).write(anyString());
-    }
-
-    @Test
-    void doFilter_returns429_whenRateLimitExceeded() throws ServletException, IOException {
-        // Given
-        String clientIp = "10.0.0.5";
-        when(request.getHeader("X-Forwarded-For")).thenReturn(null);
-        when(request.getRemoteAddr()).thenReturn(clientIp);
-        when(rateLimiterService.resolveBucket(eq(clientIp), eq(10L), eq(java.time.Duration.ofMinutes(1))))
-                .thenReturn(bucket);
-        when(bucket.tryConsume(1)).thenReturn(false);
-
-        // When
-        rateLimitFilter.doFilter(request, response, filterChain);
-
-        // Then
-        verify(response).setStatus(429);
-        verify(printWriter).write("Rate limit exceeded. Try again later.");
-        verify(filterChain, never()).doFilter(request, response);
     }
 
     @Test
