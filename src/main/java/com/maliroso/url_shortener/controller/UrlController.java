@@ -79,7 +79,7 @@ public class UrlController {
             @PathVariable(name = "code") String code
     ){
         try {
-            Optional<UrlMapping> urlMapSearch = urlService.fetchByLongUrl(code, Instant.now());
+            Optional<UrlMapping> urlMapSearch = urlService.fetchUrlMapping(code, Instant.now());
             if(urlMapSearch.isPresent()){
                 UrlMapping urlMap = urlMapSearch.get();
                 String shortUrl = baseUrl + "r/" + urlMap.getCode();
