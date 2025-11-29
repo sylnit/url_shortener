@@ -35,15 +35,25 @@ To run it using docker-compose type:
 Follow the API documentation to interact with the API
 ```
 
-### Compile and run raw file
+### Compile and run locally without docker
 Make sure you have maven installed on target computer, then do the following:
 ```agsl
-> ./mvnw test
+To run the application locally, without docker, I have provide a debug-without-docker branch:
+
+> git checkout debug-without-docker
+> set your postgresql host url in application.yaml file (default is localhost)
+> you can create a database in your postgreql and set the credentials in application.yaml file.
+
+to run tests
+> ./mvn test
+
+to run the application
 > ./mvnw spring-boot:run
 
-To package the application in a jar file, run the following command:
+to package the application in jar format
+> ./mvnw package -DskipTests
 
-> ./mvnw package
+to run the jar file:
 > java -jar target/url_shortener-0.0.1-SNAPSHOT.jar
 ```
 
@@ -53,9 +63,6 @@ To package the application in a jar file, run the following command:
 ### Swagger API Documentation
 The API is well document using OpenAPI 3 (springdoc) + Swagger-UI.
 Once the project is running, the swagger API documentation can be access at:
-
-API - Doc:
-[http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 Swagger UI:
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
