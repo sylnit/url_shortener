@@ -1,7 +1,7 @@
 # url shortener service
 
 ## Introduction
-This project is a url-shortener REST service (Spring Boot) which forms part of an assessment for the Senior Java Expert Role at Maliroso. 
+This project is a url-shortener REST service (Spring Boot) which forms part of an assessment for the Senior Java Expert Role. 
 
 ## Project goal
 Build a small, clean microservice that converts long URLs into short codes, stores them and resolves them again. This checks API design, persistence, error handling, tests, build/run.
